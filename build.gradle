@@ -10,5 +10,8 @@ repositories {
 }
 
 dependencies {
+    compile 'mysql:mysql-connector-java:5.1.13'
+    compile 'org.springframework:spring-webmvc:4.3.9.RELEASE'
+    compileOnly 'org.projectlombok:lombok:1.16.18'
     testCompile 'junit:junit:4.12'
 }
