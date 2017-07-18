@@ -2,11 +2,20 @@ package tobi.ch1.dao;
 
 import tobi.ch1.domain.User;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class UserDao {
+	private ConnectionMaker connectionMaker;
+
+	public UserDao(ConnectionMaker connectionMaker) {
+		this.connectionMaker = connectionMaker;
+	}
+
 	public void add(User user) throws ClassNotFoundException, SQLException {
-		Connection c = getConnection();
+		Connection c = connectionMaker.makeConnection();
 
 		PreparedStatement ps = c.prepareStatement("insert into users(id, name, password) VALUES(?, ?, ?)");
 		ps.setLong(1, user.getId());
@@ -19,7 +28,7 @@ public class UserDao {
 	}
 
 	public User get(Long id) throws ClassNotFoundException, SQLException {
-		Connection c = getConnection();
+		Connection c = connectionMaker.makeConnection();
 
 		PreparedStatement ps = c.prepareStatement("select * from users where id = ?");
 		ps.setLong(1, id);
@@ -36,30 +45,5 @@ public class UserDao {
 		c.close();
 
 		return user;
-	}
-
-	private Connection getConnection() throws ClassNotFoundException, SQLException {
-		Class.forName("com.mysql.jdbc.Driver");
-		Connection c = DriverManager.getConnection("jdbc:mysql://localhost/users", "root", "root");
-		return c;
-	}
-
-	public static void main(String[] args) throws ClassNotFoundException, SQLException {
-		UserDao dao = new UserDao();
-
-		User user = new User();
-		user.setId(1L);
-		user.setName("Nani");
-		user.setPassword("nani");
-
-		dao.add(user);
-
-		System.out.println(user.getId() + " registration success");
-
-		User user2 = dao.get(user.getId());
-		System.out.println(user2.getName());
-		System.out.println(user2.getPassword());
-
-		System.out.println(user2.getId() + " view success");
 	}
 }
