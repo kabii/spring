@@ -1,5 +1,7 @@
 package tobi.ch1.dao;
 
+import lombok.Getter;
+import lombok.Setter;
 import tobi.ch1.domain.User;
 
 import java.sql.Connection;
@@ -8,11 +10,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class UserDao {
+	@Getter
+	@Setter
 	private ConnectionMaker connectionMaker;
-
-	public UserDao(ConnectionMaker connectionMaker) {
-		this.connectionMaker = connectionMaker;
-	}
 
 	public void add(User user) throws ClassNotFoundException, SQLException {
 		Connection c = connectionMaker.makeConnection();
