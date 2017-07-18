@@ -1,15 +1,14 @@
 package tobi.ch1.dao;
 
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.GenericXmlApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import tobi.ch1.domain.User;
 
 import java.sql.SQLException;
 
 public class UserDaoTest {
-	public static void main(String[] args) throws ClassNotFoundException, SQLException {
-//		ApplicationContext context = new AnnotationConfigApplicationContext(CountingDaoFactory.class);
-		ApplicationContext context = new GenericXmlApplicationContext("applicationContext.xml");
+	public static void main(String[] args) throws SQLException {
+		ApplicationContext context = new AnnotationConfigApplicationContext(DaoFactory.class);
 		UserDao dao = context.getBean("userDao", UserDao.class);
 
 		User user = new User();
