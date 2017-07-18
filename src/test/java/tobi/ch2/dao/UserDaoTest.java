@@ -16,12 +16,17 @@ public class UserDaoTest {
 	public void addAndGet() throws SQLException {
 		ApplicationContext context = new AnnotationConfigApplicationContext(DaoFactory.class);
 		UserDao dao = context.getBean("userDao", UserDao.class);
+
+		dao.deleteAll();
+		assertThat(dao.getCount(), is(0));
+
 		User user = new User();
 		user.setId(1L);
 		user.setName("Nani");
 		user.setPassword("nani");
 
 		dao.add(user);
+		assertThat(dao.getCount(), is(1));
 
 		System.out.println(user.getId() + " registration success");
 
