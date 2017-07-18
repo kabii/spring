@@ -1,10 +1,12 @@
 package tobi.ch2.dao;
 
+import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.JUnitCore;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import tobi.ch2.domain.User;
 
 import java.sql.SQLException;
@@ -12,15 +14,25 @@ import java.sql.SQLException;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.*;
 
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(classes = DaoFactoryTest.class)
 public class UserDaoTest {
+	@Autowired
+	private UserDao dao;
+
+	private User user1;
+	private User user2;
+	private User user3;
+
+	@Before
+	public void setUp() {
+		user1 = new User(1L, "Nani", "nani");
+		user2 = new User(2L, "Noel", "noel");
+		user3 = new User(3L, "Genji", "genji");
+	}
+
 	@Test
 	public void addAndGet() throws SQLException {
-		ApplicationContext context = new AnnotationConfigApplicationContext(DaoFactory.class);
-
-		UserDao dao = context.getBean("userDao", UserDao.class);
-		User user1 = new User(1L, "Nani", "nani");
-		User user2 = new User(2L, "Noel", "noel");
-
 		dao.deleteAll();
 		assertThat(dao.getCount(), is(0));
 
@@ -39,13 +51,6 @@ public class UserDaoTest {
 
 	@Test
 	public void count() throws SQLException {
-		ApplicationContext context = new AnnotationConfigApplicationContext(DaoFactory.class);
-
-		UserDao dao = context.getBean("userDao", UserDao.class);
-		User user1 = new User(1L, "Nani", "nani");
-		User user2 = new User(2L, "Noel", "noel");
-		User user3 = new User(3L, "Genji", "genji");
-
 		dao.deleteAll();
 		assertThat(dao.getCount(), is(0));
 
@@ -61,16 +66,9 @@ public class UserDaoTest {
 
 	@Test(expected = EmptyResultDataAccessException.class)
 	public void getUserFailure() throws SQLException {
-		ApplicationContext context = new AnnotationConfigApplicationContext(DaoFactory.class);
-
-		UserDao dao = context.getBean("userDao", UserDao.class);
 		dao.deleteAll();
 		assertThat(dao.getCount(), is(0));
 
 		dao.get(-1L);
-	}
-
-	public static void main(String[] args) {
-		JUnitCore.main("tobi.ch2.dao.UserDaoTest");
 	}
 }
