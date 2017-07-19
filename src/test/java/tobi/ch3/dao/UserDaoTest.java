@@ -8,7 +8,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.datasource.SingleConnectionDataSource;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import tobi.ch2.domain.User;
+import tobi.ch3.domain.User;
 
 import javax.sql.DataSource;
 import java.sql.SQLException;

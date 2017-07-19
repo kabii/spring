@@ -2,7 +2,7 @@ package tobi.ch3.dao;
 
 import lombok.Setter;
 import org.springframework.dao.EmptyResultDataAccessException;
-import tobi.ch2.domain.User;
+import tobi.ch3.domain.User;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -15,34 +15,7 @@ public class UserDao {
 	private DataSource dataSource;
 
 	public void add(User user) throws SQLException {
-		Connection c = null;
-		PreparedStatement ps = null;
-		try {
-			c = dataSource.getConnection();
-			ps = c.prepareStatement("insert into users(id, name, password) VALUES(?, ?, ?)");
-			ps.setLong(1, user.getId());
-			ps.setString(2, user.getName());
-			ps.setString(3, user.getPassword());
-			ps.executeUpdate();
-		} catch (SQLException e) {
-			throw e;
-		} finally {
-			if (ps != null) {
-				try {
-					ps.close();
-				} catch (SQLException e) {
-				}
-			}
-			if (c != null) {
-				try {
-					c.close();
-				} catch (SQLException e) {
-				}
-			}
-		}
-
-		ps.close();
-		c.close();
+		jdbcContextWithStatementStrategy(new AddStatement(user));
 	}
 
 	public User get(Long id) throws SQLException {
