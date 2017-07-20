@@ -9,6 +9,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import tobi.ch3.domain.User;
 
+import java.util.List;
+
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
@@ -43,6 +45,32 @@ public class UserDaoTest {
 
 		user = dao.get(user2.getId());
 		checkSameUser(user, user2);
+	}
+
+	@Test
+	public void getAll() {
+		dao.deleteAll();
+
+		List<User> users = dao.getAll();
+		assertThat(users.size(), is(0));
+
+		dao.add(user1);
+		users = dao.getAll();
+		assertThat(users.size(), is(1));
+		checkSameUser(users.get(0), user1);
+
+		dao.add(user2);
+		users = dao.getAll();
+		assertThat(users.size(), is(2));
+		checkSameUser(users.get(0), user1);
+		checkSameUser(users.get(1), user2);
+
+		dao.add(user3);
+		users = dao.getAll();
+		assertThat(users.size(), is(3));
+		checkSameUser(users.get(0), user1);
+		checkSameUser(users.get(1), user2);
+		checkSameUser(users.get(2), user3);
 	}
 
 	@Test
