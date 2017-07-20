@@ -6,25 +6,19 @@ import java.io.IOException;
 
 public class Calculator {
 	public int sum(String filepath) throws IOException {
-		return fileReadTemplate(filepath, br -> {
-			int sum = 0;
-			String line;
-			while ((line = br.readLine()) != null) {
-				sum += Integer.parseInt(line);
-			}
-			return sum;
-		});
+		LineCallback callback = (line, value) -> {
+			value += Integer.parseInt(line);
+			return value;
+		};
+		return lineReadTemplate(filepath, callback, 0);
 	}
 
 	public int multiply(String filepath) throws IOException {
-		return fileReadTemplate(filepath, br -> {
-			int multiply = 1;
-			String line;
-			while ((line = br.readLine()) != null) {
-				multiply *= Integer.parseInt(line);
-			}
-			return multiply;
-		});
+		LineCallback callback = (line, value) -> {
+			value *= Integer.parseInt(line);
+			return value;
+		};
+		return lineReadTemplate(filepath, callback, 1);
 	}
 
 	public int fileReadTemplate(String filepath, BufferedReaderCallback callback) throws IOException {
@@ -33,6 +27,17 @@ public class Calculator {
 		} catch (IOException e) {
 			System.out.println(e.getMessage());
 			throw e;
+		}
+	}
+
+	public int lineReadTemplate(String filepath, LineCallback callback, int initValue) throws IOException {
+		try (BufferedReader br = new BufferedReader(new FileReader(filepath))) {
+			String line;
+			int value = initValue;
+			while ((line = br.readLine()) != null) {
+				value = callback.doSomethingWithLine(line, value);
+			}
+			return value;
 		}
 	}
 }
