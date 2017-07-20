@@ -17,7 +17,7 @@ import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = DaoFactoryTest.class)
+@ContextConfiguration(classes = DaoFactory.class)
 public class UserDaoTest {
 	@Autowired
 	private UserDao dao;

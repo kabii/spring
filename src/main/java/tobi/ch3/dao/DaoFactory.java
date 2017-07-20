@@ -7,7 +7,7 @@ import org.springframework.jdbc.datasource.SingleConnectionDataSource;
 import javax.sql.DataSource;
 
 @Configuration
-public class DaoFactoryTest {
+public class DaoFactory {
 	@Bean
 	public UserDao userDao() {
 		UserDao dao = new UserDao();
