@@ -30,4 +30,10 @@ public class CalculatorTest {
 		int multiply = calculator.multiply(filepath);
 		assertThat(multiply, is(24));
 	}
+
+	@Test
+	public void concatenateStrings() throws IOException {
+		String concat = calculator.concatenate(filepath);
+		assertThat(concat, is("1234"));
+	}
 }
