@@ -1,7 +1,9 @@
 package tobi.ch4.dao;
 
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import tobi.ch4.domain.DuplicateUserIdException;
 import tobi.ch4.domain.User;
 
 import javax.sql.DataSource;
@@ -15,8 +17,13 @@ public class UserDao {
 		jdbcTemplate = new JdbcTemplate(dataSource);
 	}
 
-	public void add(User user) {
-		jdbcTemplate.update("insert into users(id, name, password) VALUES(?, ?, ?)", user.getId(), user.getName(), user.getPassword());
+	public void add(User user) throws DuplicateUserIdException {
+		try {
+			jdbcTemplate.update("insert into users(id, name, password) VALUES(?, ?, ?)", user.getId(), user.getName(), user.getPassword());
+		} catch (DuplicateKeyException e) {
+			throw new DuplicateUserIdException(e);
+		}
+
 	}
 
 	public User get(Long id) {

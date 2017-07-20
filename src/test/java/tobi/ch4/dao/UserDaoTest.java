@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import tobi.ch4.domain.DuplicateUserIdException;
 import tobi.ch4.domain.User;
 
 import java.util.List;
@@ -94,6 +95,14 @@ public class UserDaoTest {
 		assertThat(dao.getCount(), is(0));
 
 		dao.get(-1L);
+	}
+
+	@Test(expected = DuplicateUserIdException.class)
+	public void duplicateUserId() {
+		dao.deleteAll();
+
+		dao.add(user1);
+		dao.add(user1);
 	}
 
 	private void checkSameUser(User user1, User user2) {
