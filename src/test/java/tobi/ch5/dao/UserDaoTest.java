@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import tobi.ch5.domain.Level;
 import tobi.ch5.domain.User;
 
 import java.util.List;
@@ -26,9 +27,9 @@ public class UserDaoTest {
 
 	@Before
 	public void setUp() {
-		user1 = new User(1L, "Nani", "nani");
-		user2 = new User(2L, "Noel", "noel");
-		user3 = new User(3L, "Genji", "genji");
+		user1 = new User(1L, "Nani", "nani", Level.GOLD, 1, 30);
+		user2 = new User(2L, "Noel", "noel", Level.SILVER, 30, 50);
+		user3 = new User(3L, "Genji", "genji", Level.BASIC, 10, 20);
 	}
 
 	@Test
@@ -100,5 +101,8 @@ public class UserDaoTest {
 		assertThat(user1.getId(), is(user2.getId()));
 		assertThat(user1.getName(), is(user2.getName()));
 		assertThat(user1.getPassword(), is(user2.getPassword()));
+		assertThat(user1.getLevel(), is(user2.getLevel()));
+		assertThat(user1.getLogin(), is(user2.getLogin()));
+		assertThat(user1.getRecommend(), is(user2.getRecommend()));
 	}
 }
