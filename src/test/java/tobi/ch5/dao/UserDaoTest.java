@@ -49,6 +49,30 @@ public class UserDaoTest {
 	}
 
 	@Test
+	public void update() {
+		dao.deleteAll();
+		assertThat(dao.getCount(), is(0));
+
+		dao.add(user1);
+		dao.add(user2);
+		assertThat(dao.getCount(), is(2));
+
+		user1.setLevel(Level.BASIC);
+		user1.setName("Nani2");
+		user1.setPassword("nani2");
+		user1.setLogin(10);
+		user1.setRecommend(100);
+
+		dao.update(user1);
+		assertThat(dao.getCount(), is(2));
+
+		User user = dao.get(user1.getId());
+		checkSameUser(user1, user);
+		user = dao.get(user2.getId());
+		checkSameUser(user2, user);
+	}
+
+	@Test
 	public void getAll() {
 		dao.deleteAll();
 
